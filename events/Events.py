@@ -61,7 +61,6 @@ class Events(commands.Cog):
                 return print('No roles to be assigned')
             if role is not None:
                 member = payload.member
-                print(member)
                 await member.add_roles(role)
 
     @commands.Cog.listener()
@@ -81,8 +80,6 @@ class Events(commands.Cog):
                 return print('No roles to be removed')
             if role is not None:
                 member = guild.get_member(payload.user_id)
-                print(payload.user_id)
-                print(member)
                 await member.remove_roles(role)
 
 
