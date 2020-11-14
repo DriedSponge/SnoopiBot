@@ -7,6 +7,8 @@ import os
 from discord.ext import commands
 intents = discord.Intents.default()
 intents.members = True
+intents.messages = True
+intents.guilds = True
 intents.typing = False
 intents.presences = False
 with open('botinfo.json') as file:
@@ -91,7 +93,7 @@ async def update():
         status = req.status_code
         max_players = 10
         try:
-            print('message not found')
+            print('Checking Scoreboard...')
             message = await channel.fetch_message(midon['message'])
             if r['success']:
                 stats = r['data']['server_info']
@@ -115,6 +117,7 @@ async def update():
                 embed = discord.Embed(title="Server Offline", color=0xF04747)
                 embed.description = f'Could not connect to server'
             embed.timestamp = datetime.datetime.utcnow()
+            print('Scoreboard message found, updating it...')
             await message.edit(embed=embed)
         except discord.errors.HTTPException:
             if r['success']:
@@ -139,6 +142,7 @@ async def update():
                 embed = discord.Embed(title="Server Offline", color=0xF04747)
                 embed.description = f'Could not connect to server'
             embed.timestamp = datetime.datetime.utcnow()
+            print('Scoreboard message not found, sending it...')
             message = await channel.send(embed=embed)
             NewChannel = {
                 "channel": midon['channel'],
