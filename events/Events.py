@@ -60,9 +60,9 @@ class Events(commands.Cog):
             if not found:
                 return print('No roles to be assigned')
             if role is not None:
-                member = discord.utils.find(lambda m: m.id == payload.user_id, guild.members)
-                if not member.bot:
-                    await member.add_roles(role)
+                member = payload.member
+                print(member)
+                await member.add_roles(role)
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
@@ -70,7 +70,7 @@ class Events(commands.Cog):
             midon = json.load(fole)
         if payload.message_id == midon['message']:
             guild_id = payload.guild_id
-            guild = discord.utils.find(lambda g: g.id == guild_id, self.client.guilds)
+            guild = self.client.get_guild(guild_id)
             found = False
             for k, v in index.roles.items():
                 if payload.emoji.name == v['name']:
@@ -80,9 +80,10 @@ class Events(commands.Cog):
             if not found:
                 return print('No roles to be removed')
             if role is not None:
-                member = discord.utils.find(lambda m: m.id == payload.user_id, guild.members)
-                if not member.bot:
-                    await member.remove_roles(role)
+                member = guild.get_member(payload.user_id)
+                print(payload.user_id)
+                print(member)
+                await member.remove_roles(role)
 
 
 def setup(client):

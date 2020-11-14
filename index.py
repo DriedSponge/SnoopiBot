@@ -5,11 +5,14 @@ from discord.ext import tasks
 import datetime
 import os
 from discord.ext import commands
-
+intents = discord.Intents.default()
+intents.members = True
+intents.typing = False
+intents.presences = False
 with open('botinfo.json') as file:
     data = json.load(file)
 
-client = commands.Bot(command_prefix=data['prefix'])
+client = commands.Bot(command_prefix=data['prefix'], intents=intents)
 
 client.remove_command('help')
 
